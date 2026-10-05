@@ -1,0 +1,59 @@
+# ═══════════════════════════════════════════════════════════════════════════
+#  MAKO · notification daemon — "Suzumi Night"
+#
+#  mako 1.11 accepts ONLY the options below. Verified by running
+#  `mako -c ~/.config/mako/config` and reading the parse errors.
+#
+#  Removed in modern mako, and so absent here:
+#     timeout              → use default-timeout
+#     anchors              → use anchor
+#     group-by-app, group-icon, group-title-format, group-text-format
+#     icon-padding, icon-size
+#     on-close-fade
+#     hidden-format        (this build rejects it; harmless to omit)
+#
+#  Colours and shape live in style.css next to this file.
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ── Timing ─────────────────────────────────────────────────────────────────
+# Long enough to read a 3-line notification, short enough not to pile up.
+default-timeout=5000
+# Apps that request a longer timeout (downloads, builds) still get it.
+ignore-timeout=0
+
+# ── History ────────────────────────────────────────────────────────────────
+history=1
+max-history=40
+
+# ── Layout ─────────────────────────────────────────────────────────────────
+width=380
+height=180
+max-visible=6
+# Gaps between a notification and the edge of the screen.
+outer-margin=14
+# Inner padding / margin of each notification.
+margin=0
+padding=0
+
+# ── Ordering & placement ───────────────────────────────────────────────────
+# sort=<field><direction>; ascending is +, descending is -.
+sort=-time
+anchor=top-right
+layer=overlay
+
+# ── Appearance ─────────────────────────────────────────────────────────────
+markup=1
+icons=1
+max-icon-size=48
+icon-border-radius=10
+border-size=2
+border-radius=14
+border-color=#8b5cf6
+background-color=#0e0b1ee0
+text-color=#ece3fb
+progress-color=#f472d0
+font=JetBrainsMono Nerd Font 10
+actions=1
+
+# ── Content ────────────────────────────────────────────────────────────────
+format=<b>{app}</b>  <span foreground="#8878b3">·  {time}</span>\n{text}

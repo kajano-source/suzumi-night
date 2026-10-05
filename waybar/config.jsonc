@@ -1,0 +1,211 @@
+// ═══════════════════════════════════════════════════════════════════════════
+//  WAYBAR · "Suzumi Night"
+//
+//  Layout only — all colours live in style.css, all icons live in
+//  scripts/ or below.
+//
+//  ⚠ ICON GLYPHS: every codepoint used here was checked against
+//     `fc-list :charset=<cp> family` and confirmed present in
+//     "JetBrainsMono Nerd Font". Material Symbols was tried first but the
+//     codepoints I wanted (U+F3928 wifi, U+FBEE0 cpu, U+F3C7 apps) are in
+//     NO installed font, which is why they rendered as blanks. The set below
+//     is Nerd Font only, so the bar depends on a single font.
+// ═══════════════════════════════════════════════════════════════════════════
+{
+    // ── Shell ─────────────────────────────────────────────────────────────
+    "layer": "top",
+    "position": "top",
+    "height": 40,
+    "margin": "6px 12px",
+    "spacing": 0,
+    "reload_style_on_change": true,
+    "ipc": true,
+
+    // ── Layout ────────────────────────────────────────────────────────────
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "pulseaudio",
+        "backlight",
+        "cpu",
+        "memory",
+        "custom/temperature",
+        "battery",
+        "network",
+        "tray",
+        "custom/power"
+    ],
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  LEFT
+    // ═════════════════════════════════════════════════════════════════════
+
+    // App grid button.  U+F00D
+    "custom/launcher": {
+        "format": "",
+        "on-click": "wofi --show drun --insensitive --prompt 'Launch ▸ '",
+        "tooltip": false
+    },
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "1": "1", "2": "2", "3": "3", "4": "4", "5": "5",
+            "6": "6", "7": "7", "8": "8", "9": "9", "10": "10",
+            // Filled / hollow diamonds: the active one is the pink one.
+            "active": "◆",
+            "default": "◇"
+        },
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "sort-by-number": true,
+        // Show 1..10 even when a workspace is empty, so the bar does not
+        // change width as you move around.
+        "persistent-workspaces": {
+            "eDP-1": 10
+        }
+    },
+
+    "hyprland/window": {
+        "format": "󰈄  {}",
+        "max-length": 40,
+        "separate-icons": true,
+        "on-click": "focus"
+    },
+
+    // ═════════════════════════════════════════════════════════════════════════════
+    //  CENTER
+    //  This is waybar's built-in `clock` module, not a custom one: strftime
+    //  specifiers only work in a real module's format field.
+    //
+    //  ⚠ waybar's clock accepts exactly ONE strftime token. Writing both
+    //    {:%H:%M} and {:%a %d %b} is a hard "invalid arg-id" error, so the
+    //    whole string comes out of a single token and the colours come from
+    //    style.css instead.
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    "clock": {
+        "format": " {:%H:%M  ·  %a %d %b}",
+        "format-alt": "<b>{:%H:%M}</b>",
+        "tooltip": "<big>{:%A, %d %B %Y}</big>",
+        "interval": 1,
+        "on-click": "gnome-calendar"
+    },
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  RIGHT
+    // ═════════════════════════════════════════════════════════════════════
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁 muted",
+        "format-icons": {
+            // 󰕾 U+F057E   󰖥 headset
+            "default":   "󰕾",
+            "headphone": "󰖥",
+            "headset":   "󰖥",
+            "phone":     "󰕾",
+            "portable":  "󰕾",
+            "car":       "󰕾",
+            // 󰖁 U+F0581
+            "muted":     "󰖁"
+        },
+        "on-click": "pavucontrol",
+        "on-scroll-up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+        "tooltip": true
+    },
+
+    "backlight": {
+        "format": "󰖨 {percent}%",
+        "min-icon": 0,
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "tooltip": true
+    },
+
+    //  U+F4BC
+    "cpu": {
+        "format": " {usage}%",
+        "interval": 2,
+        "tooltip": true
+    },
+
+    // 󰍛 U+F035B
+    "memory": {
+        "format": "󰍛 {percentage}%",
+        "interval": 5,
+        "tooltip": true
+    },
+
+    // 󰻍 U+F0ECD — CPU temperature, via scripts/temperature.sh
+    // NOTE: waybar 0.15 rejects a format mixing automatic "{}" indexing with
+    // manual fields, so custom modules must use {text}.
+    "custom/temperature": {
+        "format": "󰻍 {text}°",
+        "interval": 5,
+        // ⚠ waybar 0.15 does NOT capture stdout from "script" — only
+        //   from "exec". Verified: a script returning 42 renders empty
+        //   with "script" and correctly with "exec".
+        "exec": "~/.config/waybar/scripts/temperature.sh",
+        "on-click": "wofi --show drun --insensitive -- 'garuda-update'"
+    },
+
+    // 󰉹 / 󰉽 / 󰂄
+    "battery": {
+        "format": "{icon} {capacity}%",
+        "format-icons": {
+            "full":     "󰉹",
+            "good":     "󰉹",
+            "warning":  "󰉽",
+            "critical": "󰂄"
+        },
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "interval": 10,
+        "tooltip": true
+    },
+
+    //  U+F1EB   U+F0E8   󰈄 U+F0204
+    //  U+F0204 ethernet   U+F1EB wifi   U+F0E8 wifi-off   U+F022F bluetooth
+    "network": {
+        "format": "{icon} {ifname}",
+        "format-icons": {
+            "wired":     "󰈄",
+            "wifi":      "",
+            "bluetooth": "󰈯"
+        },
+        "format-wifi": "{icon} {signalStrength}%",
+        "format-ethernet": "󰈄 {ipaddr}/{cidr}",
+        "format-linked": "{icon} {essid} {signalStrength}%",
+        "format-disconnected": "",
+        "tooltip": "<big>{essid}</big>\n{ipaddr}/{cidr}"
+    },
+
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    },
+
+    //  U+F011
+    "custom/power": {
+        "format": "",
+        "on-click": "~/.config/hypr/scripts/powermenu.sh",
+        "tooltip": false
+    },
+
+    // ═════════════════════════════════════════════════════════════════════
+    //  Popups
+    // ═════════════════════════════════════════════════════════════════════
+    "tooltip": { "format": "{}" },
+    "main":    { "format": "{}" }
+}

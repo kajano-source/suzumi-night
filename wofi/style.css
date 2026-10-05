@@ -1,0 +1,118 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   WOFI · "Suzumi Night"
+   GTK4 CSD.
+
+   ⚠ wofi 1.5 is a GTK4 app, so this file is GTK4 CSS. That means:
+     • `selection-background-color` / `selection-color` no longer exist
+       (they produced "not a valid property name" warnings and aborted the
+       rest of the stylesheet)
+     • pseudo-classes cannot be chained (`#list:selected:hover` is an
+       "Invalid name of pseudo-class") — write them as separate rules
+     • `@define-color` still works
+
+   Everything below is deliberately conservative: simple selectors, no
+   pseudo-class chains, so the whole file parses.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@define-color base     #14102a;
+@define-color mantle   #191331;
+@define-color crust    #0e0b1e;
+@define-color surface  #221a44;
+@define-color overlay  #362a6b;
+@define-color border   #4a3a86;
+
+@define-color text     #ece3fb;
+@define-color subtext  #b3a3d6;
+@define-color dim      #8878b3;
+
+@define-color violet   #8b5cf6;
+@define-color purple   #a962ea;
+@define-color magenta  #f472d0;
+@define-color lilac    #c9a7f5;
+@define-color cyan     #7ad7f5;
+
+/* ── Window ──────────────────────────────────────────────────────────────── */
+window {
+    background-color: alpha(@crust, 0.88);
+    border: 2px solid @magenta;
+    border-radius: 16px;
+    color: @text;
+}
+
+window,
+window box,
+window > box {
+    background-color: transparent;
+}
+
+/* ── Entry list ──────────────────────────────────────────────────────────── */
+#box {
+    padding: 10px;
+    background-color: transparent;
+}
+
+#list,
+#entry,
+#input {
+    background-color: transparent;
+    color: @text;
+    font-family: "JetBrainsMono Nerd Font", "Noto Color Emoji", monospace;
+}
+
+/* ── Search box ──────────────────────────────────────────────────────────── */
+#entry {
+    font-size: 15px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    background-color: alpha(@surface, 0.6);
+    border: 1px solid alpha(@border, 0.7);
+    color: @text;
+}
+
+#entry:focus {
+    background-color: alpha(@violet, 0.24);
+    border-color: @magenta;
+}
+
+/* ── Rows ────────────────────────────────────────────────────────────────── */
+#list row {
+    padding: 7px 10px;
+    border-radius: 10px;
+    color: @subtext;
+    transition: background-color 140ms ease;
+}
+
+/* NOTE: `:selected:hover` is invalid in GTK4 — these are separate rules. */
+#list:hover {
+    background-color: alpha(@violet, 0.16);
+}
+
+#list:selected {
+    background-color: alpha(@magenta, 0.22);
+    color: @text;
+    box-shadow: inset 0 0 0 1px alpha(@magenta, 0.55);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+#scrollbar {
+    background-color: transparent;
+    border: none;
+    margin: 2px;
+}
+
+#scrollbar slider {
+    background-color: alpha(@violet, 0.55);
+    border-radius: 6px;
+    min-width: 6px;
+    min-height: 24px;
+}
+
+/* ── Preview (used by --overlay) ─────────────────────────────────────────── */
+#preview {
+    background-color: alpha(@surface, 0.5);
+    border-radius: 12px;
+    border: 1px solid alpha(@border, 0.6);
+    color: @text;
+    padding: 6px;
+}

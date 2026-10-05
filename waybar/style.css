@@ -1,0 +1,183 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   WAYBAR · "Suzumi Night"
+   Mirrors ~/.config/hypr/lua/theme.lua so the bar and the compositor are
+   guaranteed to be the same violet.
+
+   The font stack is Nerd Font first: every icon glyph in config.jsonc was
+   verified to exist in "JetBrainsMono Nerd Font", and keeping one font for
+   the whole bar means Pango never has to guess a fallback mid-string.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Noto Color Emoji", monospace;
+    font-size: 12px;
+    font-weight: 500;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    text-shadow: none;
+}
+
+/* ── The bar itself: translucent, blurred, gradient hairline ─────────────── */
+window#waybar {
+    background-color: rgba(20, 16, 42, 0.72);
+    border: 1px solid rgba(74, 58, 134, 0.55);
+    border-radius: 14px;
+    box-shadow:
+        0 4px 24px rgba(10, 7, 24, 0.55),
+        inset 0 0 0 1px rgba(244, 114, 208, 0.10);
+}
+
+/* ── Module boxes ────────────────────────────────────────────────────────── */
+#workspaces,
+#window,
+#clock,
+#pulseaudio,
+#backlight,
+#cpu,
+#memory,
+#temperature,
+#battery,
+#network,
+#tray,
+#custom-launcher,
+#custom-power {
+    padding: 0 9px;
+    margin: 5px 0;
+    border-radius: 10px;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+/* Hover pill */
+#workspaces button,
+#custom-launcher,
+#custom-power,
+#pulseaudio,
+#backlight,
+#cpu,
+#memory,
+#temperature,
+#battery,
+#network,
+#clock {
+    transition: all 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+#workspaces button:hover,
+#custom-launcher:hover,
+#custom-power:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#battery:hover,
+#network:hover,
+#clock:hover {
+    background-color: rgba(244, 114, 208, 0.16);
+    color: #ece3fb;
+}
+
+#workspaces button {
+    min-width: 22px;
+    padding: 2px 6px;
+    color: #8878b3;
+    border-radius: 8px;
+}
+
+#workspaces button.active {
+    color: #f472d0;
+    background-color: rgba(139, 92, 246, 0.22);
+    box-shadow: inset 0 0 0 1px rgba(244, 114, 208, 0.45);
+}
+
+#workspaces button.urgent {
+    color: #f38ba8;
+    background-color: rgba(243, 139, 168, 0.20);
+}
+
+/* ── Left ────────────────────────────────────────────────────────────────── */
+#custom-launcher {
+    color: #f472d0;
+    font-size: 15px;
+    margin-left: 4px;
+    margin-right: 2px;
+}
+
+#window {
+    color: #b3a3d6;
+    font-weight: 400;
+}
+
+/* ── Center clock ────────────────────────────────────────────────────────── */
+#clock {
+    color: #ece3fb;
+    font-size: 13px;
+    padding: 0 16px;
+}
+
+/* ── Right ───────────────────────────────────────────────────────────────── */
+#cpu        { color: #c9a7f5; }
+#memory     { color: #7ad7f5; }
+#temperature{ color: #f472d0; }
+#backlight  { color: #f9e2af; }
+#battery    { color: #a6e3a1; }
+#network    { color: #7ad7f5; }
+#pulseaudio { color: #a6e3a1; }
+#tray       { color: #b3a3d6; }
+
+#custom-power {
+    color: #f472d0;
+    font-size: 15px;
+    margin-right: 4px;
+}
+
+/* Warn states */
+#battery.warning  { color: #f9e2af; }
+#battery.critical { color: #f38ba8; animation: pulse 1.4s ease-in-out infinite; }
+
+#network.disconnected,
+#network.none {
+    color: #8878b3;
+}
+
+#pulseaudio.muted {
+    color: #f38ba8;
+}
+
+@keyframes pulse {
+    0%   { opacity: 1.0; }
+    50%  { opacity: 0.45; }
+    100% { opacity: 1.0; }
+}
+
+/* ── Tray icons ──────────────────────────────────────────────────────────── */
+/* waybar 0.15 does not support -gtk-icon-opacity, so dim the tray with
+   opacity on the child widgets instead. */
+#tray > .passive,
+#tray > .inactive {
+    opacity: 0.55;
+    transition: opacity 160ms ease;
+}
+
+#tray > .passive:hover,
+#tray > .inactive:hover {
+    opacity: 1.0;
+}
+
+/* ── Tooltip popups ──────────────────────────────────────────────────────── */
+tooltip {
+    background-color: rgba(14, 11, 30, 0.94);
+    border: 1px solid rgba(139, 92, 246, 0.55);
+    border-radius: 12px;
+    color: #ece3fb;
+    padding: 8px 12px;
+    box-shadow: 0 8px 28px rgba(10, 7, 24, 0.7);
+}
+
+tooltip label {
+    color: #ece3fb;
+    font-size: 12px;
+    padding: 1px 0;
+}

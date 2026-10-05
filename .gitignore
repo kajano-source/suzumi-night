@@ -1,0 +1,3 @@
+# Local noise
+*.log
+.DS_Store

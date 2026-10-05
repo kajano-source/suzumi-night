@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# ═══════════════════════════════════════════════════════════════════════════
+#  wofi configuration — Suzumi Night
+#  wofi sources this file as a shell script before showing the menu, so these
+#  are plain variable assignments (no `export` needed except for WOFI_STYLE,
+#  which wofi reads from the environment).
+#  Verified against: wofi 1.5.3
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ── Style ──────────────────────────────────────────────────────────────────
+export WOFI_STYLE="$HOME/.config/wofi/style.css"
+gtk_dark=true
+
+# ── Geometry ───────────────────────────────────────────────────────────────
+# ⚠ `height=0` makes GTK4 abort with
+#     "gtk_window_resize: assertion 'height > 0' failed"
+#   and wofi never draws. Use a real pixel height instead.
+location=center
+width=620
+height=520
+x_offset=0
+y_offset=0
+monitor=focused
+
+# ── Entry list ─────────────────────────────────────────────────────────────
+insensitive=true
+hide_scroll=false
+matching=contains
+sort_order=default
+# Pango markup lets the entries carry nerd-font icons.
+allow_markup=true
+allow_images=true
+# Never let a stray "search" string be submitted as a command by accident.
+no_custom_entry=true
+parse_search=true
+# ── Search box ─────────────────────────────────────────────────────────────
+prompt="Launch  ▸ "
+hide_search=false
+# ── Behaviour ──────────────────────────────────────────────────────────────
+# Close when the compositor drops focus (click-away) rather than lingering.
+follow=focus
+# Keep the window above everything; Hyprland's layerrule does the rounding.
+normal_window=false

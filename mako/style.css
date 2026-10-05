@@ -1,0 +1,83 @@
+/* MAKO · "Suzumi Night" — content styling. Shape comes from the layerrule. */
+@define-color base    #14102a;
+@define-color crust   #0e0b1e;
+@define-color surface #221a44;
+@define-color border  #4a3a86;
+@define-color text    #ece3fb;
+@define-color subtext #b3a3d6;
+@define-color dim     #8878b3;
+@define-color violet  #8b5cf6;
+@define-color magenta #f472d0;
+
+.notification {
+    background-color: alpha(@crust, 0.88);
+    border: 1px solid alpha(@border, 0.75);
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(10, 7, 24, 0.75);
+    color: @text;
+    padding: 0;
+    margin: 0;
+}
+
+.notification .summary,
+.notification .message {
+    color: @text;
+    font-family: "JetBrainsMono Nerd Font", sans-serif;
+}
+
+.notification .summary {
+    font-weight: 700;
+    font-size: 12px;
+    color: @magenta;
+    margin-bottom: 2px;
+}
+
+.notification .message {
+    font-size: 12.5px;
+    color: @subtext;
+}
+
+.notification .app-name {
+    color: @dim;
+    font-size: 11px;
+}
+
+.notification .time {
+    color: @dim;
+    font-size: 11px;
+}
+
+.notification .image {
+    border-radius: 10px;
+    margin: 10px 0 0 0;
+}
+
+.notification.critical,
+.notification.critical:hover {
+    background-color: alpha(#f38ba8, 0.20);
+    border-color: #f38ba8;
+}
+
+.notification.critical .summary {
+    color: #f38ba8;
+}
+
+.notification.focus,
+.notification:hover {
+    background-color: alpha(@violet, 0.22);
+    border-color: @magenta;
+    box-shadow: 0 10px 34px rgba(10, 7, 24, 0.85),
+                0 0 0 1px alpha(@magenta, 0.35);
+}
+
+/* Group headers */
+.notification-group {
+    background-color: alpha(@surface, 0.55);
+    border: 1px solid alpha(@violet, 0.4);
+    border-radius: 12px;
+    color: @subtext;
+}
+
+.notification-group .summary {
+    color: @violet;
+}
