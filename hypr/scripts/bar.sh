@@ -2,9 +2,7 @@
 # ═══════════════════════════════════════════════════════════════════════════
 #  bar.sh — show / hide / restart waybar
 #
-#    bar.sh toggle
-#    bar.sh on | off
-#    bar.sh restart
+#    bar.sh toggle | on | off | restart | css | status
 # ═══════════════════════════════════════════════════════════════════════════
 set -u
 
@@ -46,8 +44,11 @@ case "${1:-toggle}" in
         reload_css
         echo "bar: css reloaded"
         ;;
+    status)
+        running && echo "bar: on" || echo "bar: off"
+        ;;
     *)
-        echo "usage: $0 {on|off|toggle|restart|css}" >&2
+        echo "usage: $0 {on|off|toggle|restart|css|status}" >&2
         exit 1
         ;;
 esac

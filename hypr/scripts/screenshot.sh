@@ -44,10 +44,17 @@ grab() {
             grim -g "$(slurp)" "$TMP"
             ;;
         window)
-            # hyprctl reports the focused window geometry as at[] / size[].
+            # hyprctl reports the focused window's geometry.
+            #
+            # ⚠ The JSON shape changed in 0.56: `at` used to be
+            #   [{x:0,y:0}] and is now a flat [0, 0]. The jq below accepts
+            #   both so this keeps working either way.
             local geom
-            geom=$(hyprctl activewindow -j 2>/dev/null | jq -r \
-                '"\(.at[0].x),\(.at[0].y) \(.size[0])x\(.size[1])"')
+            geom=$(hyprctl activewindow -j 2>/dev/null | jq -r '
+                if (.at[0] | type) == "object"
+                then "\(.at[0].x),\(.at[0].y) \(.size[0])x\(.size[1])"
+                else "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"
+                end')
             [ -n "$geom" ] && [ "$geom" != "null" ] || return 1
             grim -g "$geom" "$TMP"
             ;;
@@ -70,8 +77,12 @@ fi
 [ -s "$TMP" ] || { echo "empty capture" >&2; exit 1; }
 
 # ── Clipboard ──────────────────────────────────────────────────────────────
+# wl-copy forks to serve the clipboard but keeps stdout/stderr attached, which
+# makes any caller that is reading our output (a terminal, a pipeline, a
+# keybind) block forever waiting for the pipe to close. Detach it fully.
 if command -v wl-copy >/dev/null 2>&1; then
-    wl-copy -t image/png < "$TMP"
+    wl-copy -t image/png -- <"$TMP" >/dev/null 2>&1 &
+    disown 2>/dev/null || true
 fi
 
 # ── Save + announce ────────────────────────────────────────────────────────

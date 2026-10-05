@@ -175,4 +175,15 @@ hl.config({
         background_color        = t.c(t.base, 1.0),
         font_family             = "JetBrainsMono Nerd Font",
     },
+
+    -- ── Ecosystem ───────────────────────────────────────────────────────────
+    -- This machine jumped from a 0.5x-era config straight to 0.56, which is
+    -- a breaking release. The startup popup that says "Hyprland updated to
+    -- 0.56.2, check the release notes" is exactly the wrong thing to hit on
+    -- first login after a day of configuring, so it is suppressed. Flip
+    -- no_update_news to false if you want to read them in-session.
+    ecosystem = {
+        no_update_news  = true,
+        no_donation_nag = true,
+    },
 })

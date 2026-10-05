@@ -103,7 +103,10 @@ hl.bind(S .. " + I", hl.dsp.window.set_prop({ prop = "pinned", value = "1" }),
         { description = "Pin on top" })
 hl.bind(S .. " + " .. SHIFT .. " + J", hl.dsp.window.pseudo(),
         { description = "Pseudotile" })
-hl.bind(S .. " + " .. ALT .. " + M", hl.dsp.exec_cmd("hyprctl keyword animations:enabled toggle"),
+-- NOTE: `hyprctl keyword` refuses to work against a Lua config in 0.56
+-- ("keyword can't work with non-legacy parsers. Use eval."), so this has to
+-- go through hl.config via `hyprctl eval`.
+hl.bind(S .. " + " .. ALT .. " + M", hl.dsp.exec_cmd("~/.config/hypr/scripts/animation-toggle.sh"),
         { description = "Toggle animations" })
 
 -- ── Focus ──────────────────────────────────────────────────────────────────
