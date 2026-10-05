@@ -19,6 +19,7 @@ ACTIONS=(
     "󰓩  Toggle Live Wallpaper|anime"
     "󰔡  Toggle Music Visualiser|visualiser"
     "󰇳  Toggle Bar|bar"
+    "󰔡  System Dashboard|dashboard"
     "󰩈  Bluetooth|bluetooth"
     "󰖯  Audio Mixer|mixer"
     "󰇮  Display Settings|displays"
@@ -91,6 +92,7 @@ case "$PAYLOAD" in
     action:anime)         exec "$CFG/scripts/anime-wallpaper.sh" toggle ;;
     action:visualiser)    exec "$CFG/scripts/visualiser.sh" toggle ;;
     action:bar)           exec "$CFG/scripts/bar.sh" toggle ;;
+    action:dashboard)      exec "$CFG/scripts/open-dashboard.sh" ;;
     action:bluetooth)     exec blueman-manager ;;
     action:mixer)         exec pavucontrol ;;
     action:displays)      exec systemsettings kcm_kscreen ;;
